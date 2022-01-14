@@ -1,13 +1,6 @@
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 10           
-// Controller1          controller                    
-// IntakeMotors         motor_group   15, 16          
-// IntakeElevationMotor motor         2               
-// ---- END VEXCODE CONFIGURED DEVICES ----
-
 #include "vex.h"
+#include "stdlib.h"
+#include <sstream>
 
 using namespace vex;
 competition Competition;
@@ -15,13 +8,16 @@ competition Competition;
 // define your global instances of motors and other devices here
 
 // some vars
+double intakeMotorsSpeed = 50;
+double intakeTiltMotorSpeed = 50;
 
-
+std::string drivetrainVoltage = std::to_string(Drivetrain.voltage()) + " V";
 
 // pre-autonomous functions
 void pre_auton(void) 
 {
   vexcodeInit();
+  Brain.Screen.clearScreen();
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
@@ -30,22 +26,42 @@ void pre_auton(void)
 // autonomous stuff
 void autonomous(void) 
 {
+  Brain.Screen.clearScreen();
+  Brain.Screen.print("Begin Autonomous...");
+ 
+  Drivetrain.driveFor(forward, 700, mm);
+  IntakeMotors.spin(forward, intakeMotorsSpeed, percent);
+  Drivetrain.driveFor(forward, 400, mm);
+  IntakeMotors.stop();
+
+  Brain.Screen.print("End Autonomous");  
 }
+
 
 
 // driver control
 void usercontrol(void) 
 {
+  Brain.Screen.print("Begin Usercontrol");
+  Brain.Screen.clearScreen();
+
   while (1) 
-  {
+  { 
+    Brain.Screen.clearScreen();
+    Brain.Screen.print(drivetrainVoltage);
+    
+
+
+
     // IntakeMotors
     if (Controller1.ButtonR1.pressing() == true)
     {
-      IntakeMotors.spin(forward, 50, percent);
+      IntakeMotors.spin(forward, intakeMotorsSpeed, percent);
+      
     }
     else if (Controller1.ButtonR2.pressing() == true)
     {
-      IntakeMotors.spin(forward, 50, percent);
+      IntakeMotors.spin(forward, -intakeMotorsSpeed, percent);
     }
     else
     {
@@ -55,11 +71,11 @@ void usercontrol(void)
     // IntakeElevation
     if (Controller1.ButtonL1.pressing() == true)
     {
-      IntakeElevationMotor.spin(forward, 50, percent);
+      IntakeElevationMotor.spin(forward, intakeTiltMotorSpeed, percent);
     }
     else if (Controller1.ButtonL2.pressing() == true)
     {
-      IntakeElevationMotor.spin(forward, 50, percent);
+      IntakeElevationMotor.spin(forward, -intakeMotorsSpeed, percent);
     }
     else
     {
@@ -74,7 +90,7 @@ void usercontrol(void)
 
 int main() 
 {
-  // Set up callbacks for autonomous and driver control periods.
+  // set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
