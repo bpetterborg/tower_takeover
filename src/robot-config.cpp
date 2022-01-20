@@ -13,8 +13,8 @@ drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 320,
 
 controller Controller1 = controller(primary);
 
-motor IntakeMotorsMotorA = motor(PORT15, ratio18_1, true);
-motor IntakeMotorsMotorB = motor(PORT16, ratio18_1, false);
+motor IntakeMotorsMotorA = motor(PORT15, ratio18_1, false);
+motor IntakeMotorsMotorB = motor(PORT16, ratio18_1, true);
 motor_group IntakeMotors = motor_group(IntakeMotorsMotorA, IntakeMotorsMotorB);
 
 motor IntakeElevationMotor = motor(PORT2, ratio18_1, false);
