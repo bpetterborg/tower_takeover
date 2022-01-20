@@ -24,8 +24,8 @@ bool RemoteControlCodeEnabled = true;
 bool DrivetrainLNeedsToBeStopped_Controller1 = true;
 bool DrivetrainRNeedsToBeStopped_Controller1 = true;
 
-
-
+float velocityMultiplier = 0.5;
+int deadband = 4;
 
 // define a task that will handle monitoring inputs from Controller1
 int rc_auto_loop_function_Controller1() 
@@ -34,11 +34,11 @@ int rc_auto_loop_function_Controller1()
   {
     if (RemoteControlCodeEnabled) 
     {
-      int drivetrainLeftSideSpeed = Controller1.Axis3.position();
-      int drivetrainRightSideSpeed = Controller1.Axis2.position();
+      int drivetrainLeftSideSpeed = (Controller1.Axis3.position() * velocityMultiplier);
+      int drivetrainRightSideSpeed = (Controller1.Axis2.position() * velocityMultiplier);
       
       // check if the value is inside of the deadband range
-      if (drivetrainLeftSideSpeed < 5 && drivetrainLeftSideSpeed > -5) 
+      if (drivetrainLeftSideSpeed < deadband && drivetrainLeftSideSpeed > -deadband) 
       {
         // check if the left motor has already been stopped
         if (DrivetrainLNeedsToBeStopped_Controller1) 
@@ -55,7 +55,7 @@ int rc_auto_loop_function_Controller1()
       }
 
       // check if the value is inside of the deadband range
-      if (drivetrainRightSideSpeed < 5 && drivetrainRightSideSpeed > -5) 
+      if (drivetrainRightSideSpeed < deadband && drivetrainRightSideSpeed > -deadband) 
       {
         // check if the right motor has already been stopped
         if (DrivetrainRNeedsToBeStopped_Controller1) 
@@ -83,7 +83,6 @@ int rc_auto_loop_function_Controller1()
         RightDriveSmart.setVelocity(drivetrainRightSideSpeed, percent);
         RightDriveSmart.spin(forward);
       }
-
 
     }
 

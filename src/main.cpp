@@ -1,6 +1,4 @@
 #include "vex.h"
-#include "stdlib.h"
-#include <sstream>
 
 using namespace vex;
 competition Competition;
@@ -8,10 +6,9 @@ competition Competition;
 // define your global instances of motors and other devices here
 
 // some vars
-double intakeMotorsSpeed = 50;
-double intakeTiltMotorSpeed = 50;
+int intakeMotorsSpeed = 50;
+int intakeTiltMotorSpeed = 50;
 
-std::string drivetrainVoltage = std::to_string(Drivetrain.voltage()) + " V";
 
 // pre-autonomous functions
 void pre_auton(void) 
@@ -38,7 +35,6 @@ void autonomous(void)
 }
 
 
-
 // driver control
 void usercontrol(void) 
 {
@@ -48,11 +44,7 @@ void usercontrol(void)
   while (1) 
   { 
     Brain.Screen.clearScreen();
-    Brain.Screen.print(drivetrainVoltage);
     
-
-
-
     // IntakeMotors
     if (Controller1.ButtonR1.pressing() == true)
     {

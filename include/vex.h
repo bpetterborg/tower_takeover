@@ -18,7 +18,7 @@
 #include "robot-config.h"
 
 #define waitUntil(condition)                                                   \
-  do {                                                                         \
+  do{                                                                         \
     wait(5, msec);                                                             \
   } while (!(condition))
 
